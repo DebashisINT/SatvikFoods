@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1031999236036",
+    "project_id": "satvik-foods-fccd3",
+    "storage_bucket": "satvik-foods-fccd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031999236036:android:3d914511455494b49be691",
+        "android_client_info": {
+          "package_name": "com.satvikfoods"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031999236036-52isb2tp67qvga335a8cjgv9c6aj4l3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEGo5IhNgcXmMwEx_DLSkugSeX7xvNePA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031999236036-52isb2tp67qvga335a8cjgv9c6aj4l3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
