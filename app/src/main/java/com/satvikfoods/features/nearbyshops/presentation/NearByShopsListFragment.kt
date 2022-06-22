@@ -783,71 +783,78 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     if (!Pref.isAddAttendence)
                         (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
                     else {
-                        collectionDialog = AddCollectionDialog.getInstance(list[position], true, list[position].shopName!!, "", "", "", object : AddCollectionDialog.AddCollectionClickLisneter {
-                            override fun onClick(collection: String, date: String, paymentId: String, instrument: String, bank: String, filePath: String, feedback: String, patientName: String, patientAddress: String, patinetNo: String,
-                            hospital:String,emailAddress:String,order_id:String) {
+
+                        if(Pref.IsCollectionOrderWise){
+                            (mContext as DashboardActivity).loadFragment(FragType.NewOrderListFragment, true, "")
+                        }else{
+                            collectionDialog = AddCollectionDialog.getInstance(list[position], true, list[position].shopName!!, "", "", "", object : AddCollectionDialog.AddCollectionClickLisneter {
+                                override fun onClick(collection: String, date: String, paymentId: String, instrument: String, bank: String, filePath: String, feedback: String, patientName: String, patientAddress: String, patinetNo: String,
+                                                     hospital:String,emailAddress:String,order_id:String) {
 
 
-                                val addShop = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(list[position].shop_id)
-                                if (addShop != null) {
+                                    val addShop = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(list[position].shop_id)
+                                    if (addShop != null) {
 
-                                    //if (addShop.isUploaded) {
+                                        //if (addShop.isUploaded) {
 
-                                    doAsync {
+                                        doAsync {
 
-                                        val collectionDetails = CollectionDetailsEntity()
-                                        collectionDetails.collection = collection/*.substring(1)*/
+                                            val collectionDetails = CollectionDetailsEntity()
+                                            collectionDetails.collection = collection/*.substring(1)*/
 
-                                        val random = Random()
-                                        val m = random.nextInt(9999 - 1000) + 1000
+                                            val random = Random()
+                                            val m = random.nextInt(9999 - 1000) + 1000
 
-                                        //collectionDetails.collection_id = Pref.user_id + "_" + m /*+ "_" + System.currentTimeMillis().toString()*/
-                                        collectionDetails.collection_id = Pref.user_id + "c" + m
-                                        collectionDetails.shop_id = list[position].shop_id
-                                        collectionDetails.date = date //AppUtils.getCurrentDate()
-                                        collectionDetails.only_time = AppUtils.getCurrentTime()  //AppUtils.getCurrentDate()
-                                        collectionDetails.bill_id = ""
-                                        collectionDetails.order_id = ""
-                                        collectionDetails.payment_id = paymentId
-                                        collectionDetails.bank = bank
-                                        collectionDetails.instrument_no = instrument
-                                        collectionDetails.file_path = filePath
-                                        collectionDetails.feedback = feedback
-                                        collectionDetails.patient_name = patientName
-                                        collectionDetails.patient_address = patientAddress
-                                        collectionDetails.patient_no = patinetNo
+                                            //collectionDetails.collection_id = Pref.user_id + "_" + m /*+ "_" + System.currentTimeMillis().toString()*/
+                                            collectionDetails.collection_id = Pref.user_id + "c" + m
+                                            collectionDetails.shop_id = list[position].shop_id
+                                            collectionDetails.date = date //AppUtils.getCurrentDate()
+                                            collectionDetails.only_time = AppUtils.getCurrentTime()  //AppUtils.getCurrentDate()
+                                            collectionDetails.bill_id = ""
+                                            collectionDetails.order_id = ""
+                                            collectionDetails.payment_id = paymentId
+                                            collectionDetails.bank = bank
+                                            collectionDetails.instrument_no = instrument
+                                            collectionDetails.file_path = filePath
+                                            collectionDetails.feedback = feedback
+                                            collectionDetails.patient_name = patientName
+                                            collectionDetails.patient_address = patientAddress
+                                            collectionDetails.patient_no = patinetNo
 
-                                        /*06-01-2022*/
-                                        collectionDetails.Hospital = hospital
-                                        collectionDetails.Email_Address = emailAddress
+                                            /*06-01-2022*/
+                                            collectionDetails.Hospital = hospital
+                                            collectionDetails.Email_Address = emailAddress
 
-                                        collectionDetails.order_id = order_id
-                                        AppDatabase.getDBInstance()!!.collectionDetailsDao().insert(collectionDetails)
+                                            collectionDetails.order_id = order_id
+                                            AppDatabase.getDBInstance()!!.collectionDetailsDao().insert(collectionDetails)
 
-                                        val collectionDate = AppUtils.getCurrentDateForShopActi() + "T" + collectionDetails.only_time
+                                            val collectionDate = AppUtils.getCurrentDateForShopActi() + "T" + collectionDetails.only_time
 
-                                        uiThread {
+                                            uiThread {
 
-                                            if (AppUtils.isOnline(mContext)) {
-                                                if (addShop.isUploaded) {
-                                                    addCollectionApi(collectionDetails.shop_id, collectionDetails.collection_id, "",
+                                                if (AppUtils.isOnline(mContext)) {
+                                                    if (addShop.isUploaded) {
+                                                        addCollectionApi(collectionDetails.shop_id, collectionDetails.collection_id, "",
                                                             "", collection, collectionDate, collectionDetails.bill_id, collectionDetails)
-                                                } else {
-                                                    syncShopForCollection(addShop, collectionDetails.shop_id, collectionDetails.collection_id, "", "", collection,
+                                                    } else {
+                                                        syncShopForCollection(addShop, collectionDetails.shop_id, collectionDetails.collection_id, "", "", collection,
                                                             collectionDate, collectionDetails.bill_id, collectionDetails)
+                                                    }
+
+
+                                                } else {
+                                                    (mContext as DashboardActivity).showSnackMessage("Collection added successfully")
+                                                    voiceCollectionMsg()
                                                 }
-
-
-                                            } else {
-                                                (mContext as DashboardActivity).showSnackMessage("Collection added successfully")
-                                                voiceCollectionMsg()
                                             }
                                         }
                                     }
                                 }
-                            }
-                        })
-                        collectionDialog?.show((mContext as DashboardActivity).supportFragmentManager, "AddCollectionDialog")
+                            })
+                            collectionDialog?.show((mContext as DashboardActivity).supportFragmentManager, "AddCollectionDialog")
+                        }
+
+
                     }
 
                 } catch (e: java.lang.Exception) {

@@ -138,7 +138,7 @@ class CollectionPendingDtlsFrag : BaseFragment(), View.OnClickListener {
                     }
                 }
 
-                totalPendingAmt=(objPending.order_amt.toDouble()-totalCollAmt.toDouble()).toString()
+                totalPendingAmt=(objPending.order_amt.toDouble() - String.format("%.2f",totalCollAmt.toDouble()).toDouble()).toString()
 
                 var totalInvAmt ="0"
                 if(Pref.IsCollectionEntryConsiderOrderOrInvoice){
@@ -169,9 +169,11 @@ class CollectionPendingDtlsFrag : BaseFragment(), View.OnClickListener {
         if (objPendingList.size > 0) {
             initAdapter(objPendingList)
             tv_noData.visibility = View.GONE
+            rv_CollectiondtlsList.visibility = View.VISIBLE
         }
         else {
             tv_noData.visibility = View.VISIBLE
+            rv_CollectiondtlsList.visibility = View.GONE
         }
     }
 

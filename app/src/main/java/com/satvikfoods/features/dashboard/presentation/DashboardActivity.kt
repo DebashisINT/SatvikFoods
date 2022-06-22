@@ -3248,7 +3248,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
             R.id.tv_entry -> {
                 isShopFromChatBot = false
-                loadFragment(FragType.NearByShopsListFragment, false, "")
+                if(Pref.IsCollectionOrderWise){
+                    loadFragment(FragType.NewOrderListFragment, false, "")
+                }else{
+                    loadFragment(FragType.NearByShopsListFragment, false, "")
+                }
             }
 
             R.id.share_loc_TV -> {
@@ -7286,6 +7290,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 (getFragment() as CollectionNotiViewPagerFrag1).updateView()
             if (getFragment() != null && getFragment() is CollectionNotiViewPagerFrag)
                 (getFragment() as CollectionNotiViewPagerFrag).updateView()
+            if (getFragment() != null && getFragment() is CollectionNotiViewPagerFrag2)
+                (getFragment() as CollectionNotiViewPagerFrag2).updateView()
         }
         else {
             super.onBackPressed()
