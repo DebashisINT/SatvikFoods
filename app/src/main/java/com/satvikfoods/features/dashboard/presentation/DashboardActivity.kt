@@ -3543,8 +3543,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
 
     fun openShareIntents() {
-        openShare()
-        return
+        //openShare()
+        //return
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
 //        val phototUri = Uri.parse(localAbsoluteFilePath)
@@ -3567,6 +3567,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             startActivity(Intent.createChooser(shareIntent, "Share log using"));
         } catch (e: Exception) {
             e.printStackTrace()
+            XLog.d("DashboardActivity openShare : erroree ${e.message}")
+            (mContext as DashboardActivity).showSnackMessage(getString(R.string.something_went_wrong))
         }
 
 
@@ -3598,6 +3600,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             startActivity(Intent.createChooser(intent, "Share log using"))
         }catch (ex:Exception){
             ex.printStackTrace()
+            XLog.d("DashboardActivity openShare : error ${ex.message}")
+            (mContext as DashboardActivity).showSnackMessage(getString(R.string.something_went_wrong))
         }
     }
 
